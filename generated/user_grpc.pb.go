@@ -21,6 +21,8 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	UserService_GetUser_FullMethodName        = "/UserService/GetUser"
 	UserService_GetActivityLog_FullMethodName = "/UserService/GetActivityLog"
+	UserService_UploadUsers_FullMethodName    = "/UserService/UploadUsers"
+	UserService_Chat_FullMethodName           = "/UserService/Chat"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -29,6 +31,8 @@ const (
 type UserServiceClient interface {
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*User, error)
 	GetActivityLog(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[User], error)
+	UploadUsers(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[User, UploadSummary], error)
+	Chat(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[User, ServerReply], error)
 }
 
 type userServiceClient struct {
@@ -68,12 +72,40 @@ func (c *userServiceClient) GetActivityLog(ctx context.Context, in *GetUserReque
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type UserService_GetActivityLogClient = grpc.ServerStreamingClient[User]
 
+func (c *userServiceClient) UploadUsers(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[User, UploadSummary], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &UserService_ServiceDesc.Streams[1], UserService_UploadUsers_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[User, UploadSummary]{ClientStream: stream}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type UserService_UploadUsersClient = grpc.ClientStreamingClient[User, UploadSummary]
+
+func (c *userServiceClient) Chat(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[User, ServerReply], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &UserService_ServiceDesc.Streams[2], UserService_Chat_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[User, ServerReply]{ClientStream: stream}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type UserService_ChatClient = grpc.BidiStreamingClient[User, ServerReply]
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility.
 type UserServiceServer interface {
 	GetUser(context.Context, *GetUserRequest) (*User, error)
 	GetActivityLog(*GetUserRequest, grpc.ServerStreamingServer[User]) error
+	UploadUsers(grpc.ClientStreamingServer[User, UploadSummary]) error
+	Chat(grpc.BidiStreamingServer[User, ServerReply]) error
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -89,6 +121,12 @@ func (UnimplementedUserServiceServer) GetUser(context.Context, *GetUserRequest) 
 }
 func (UnimplementedUserServiceServer) GetActivityLog(*GetUserRequest, grpc.ServerStreamingServer[User]) error {
 	return status.Error(codes.Unimplemented, "method GetActivityLog not implemented")
+}
+func (UnimplementedUserServiceServer) UploadUsers(grpc.ClientStreamingServer[User, UploadSummary]) error {
+	return status.Error(codes.Unimplemented, "method UploadUsers not implemented")
+}
+func (UnimplementedUserServiceServer) Chat(grpc.BidiStreamingServer[User, ServerReply]) error {
+	return status.Error(codes.Unimplemented, "method Chat not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 func (UnimplementedUserServiceServer) testEmbeddedByValue()                     {}
@@ -140,6 +178,20 @@ func _UserService_GetActivityLog_Handler(srv interface{}, stream grpc.ServerStre
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type UserService_GetActivityLogServer = grpc.ServerStreamingServer[User]
 
+func _UserService_UploadUsers_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(UserServiceServer).UploadUsers(&grpc.GenericServerStream[User, UploadSummary]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type UserService_UploadUsersServer = grpc.ClientStreamingServer[User, UploadSummary]
+
+func _UserService_Chat_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(UserServiceServer).Chat(&grpc.GenericServerStream[User, ServerReply]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type UserService_ChatServer = grpc.BidiStreamingServer[User, ServerReply]
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -157,6 +209,17 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 			StreamName:    "GetActivityLog",
 			Handler:       _UserService_GetActivityLog_Handler,
 			ServerStreams: true,
+		},
+		{
+			StreamName:    "UploadUsers",
+			Handler:       _UserService_UploadUsers_Handler,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "Chat",
+			Handler:       _UserService_Chat_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
 		},
 	},
 	Metadata: "proto/user.proto",

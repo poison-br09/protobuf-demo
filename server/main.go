@@ -58,6 +58,41 @@ func (s *userServiceServer) GetActivityLog(req *generated.GetUserRequest, stream
 	return nil
 }
 
+func (s *userServiceServer) UploadUsers(stream grpc.ClientStreamingServer[generated.User, generated.UploadSummary]) error {
+	count := 0
+
+	for {
+		user, err := stream.Recv()
+		if err != nil {
+			break
+		}
+
+		fmt.Println("Server recieved user: %s\n", user.Name)
+		count++
+	}
+
+	return stream.SendAndClose(&generated.UploadSummary{
+		Count:   int32(count),
+		Message: fmt.Sprintf("Succefully received %d users", count),
+	})
+}
+
+func (s *userServiceServer) Chat(stream grpc.BidiStreamingServer[generated.User, generated.ServerReply]) error {
+	for {
+		user, err := stream.Recv()
+		if err != nil {
+			break
+		}
+
+		fmt.Printf("Server received message from: %s\n", user.Name)
+
+		stream.Send(&generated.ServerReply{
+			Message: fmt.Sprintf("Hello %s! Welcome to the server.", user.Name),
+		})
+	}
+	return nil
+}
+
 func main() {
 	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {

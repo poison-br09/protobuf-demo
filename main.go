@@ -11,9 +11,9 @@ import (
 
 func main() {
 	user := &generated.User{
-		Id:    1,
-		Name:  "Abhay",
-		Email: "abhay@zenwork.com",
+		Id:   1,
+		Name: "Abhay",
+		// Email: "abhay@zenwork.com",
 	}
 
 	data, err := proto.Marshal(user)

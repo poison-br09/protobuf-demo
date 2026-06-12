@@ -77,7 +77,6 @@ type User struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Test          string                 `protobuf:"bytes,3,opt,name=test,proto3" json:"test,omitempty"`
 	Address       *Address               `protobuf:"bytes,4,opt,name=address,proto3" json:"address,omitempty"`
 	Phones        []string               `protobuf:"bytes,5,rep,name=phones,proto3" json:"phones,omitempty"`
 	Age           int32                  `protobuf:"varint,6,opt,name=age,proto3" json:"age,omitempty"`
@@ -125,13 +124,6 @@ func (x *User) GetId() int32 {
 func (x *User) GetName() string {
 	if x != nil {
 		return x.Name
-	}
-	return ""
-}
-
-func (x *User) GetTest() string {
-	if x != nil {
-		return x.Test
 	}
 	return ""
 }
@@ -201,6 +193,102 @@ func (x *GetUserRequest) GetId() int32 {
 	return 0
 }
 
+type UploadSummary struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Count         int32                  `protobuf:"varint,1,opt,name=count,proto3" json:"count,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UploadSummary) Reset() {
+	*x = UploadSummary{}
+	mi := &file_proto_user_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UploadSummary) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UploadSummary) ProtoMessage() {}
+
+func (x *UploadSummary) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_user_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UploadSummary.ProtoReflect.Descriptor instead.
+func (*UploadSummary) Descriptor() ([]byte, []int) {
+	return file_proto_user_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *UploadSummary) GetCount() int32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
+func (x *UploadSummary) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type ServerReply struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ServerReply) Reset() {
+	*x = ServerReply{}
+	mi := &file_proto_user_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ServerReply) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ServerReply) ProtoMessage() {}
+
+func (x *ServerReply) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_user_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ServerReply.ProtoReflect.Descriptor instead.
+func (*ServerReply) Descriptor() ([]byte, []int) {
+	return file_proto_user_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *ServerReply) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
 var File_proto_user_proto protoreflect.FileDescriptor
 
 const file_proto_user_proto_rawDesc = "" +
@@ -208,19 +296,25 @@ const file_proto_user_proto_rawDesc = "" +
 	"\x10proto/user.proto\"5\n" +
 	"\aAddress\x12\x16\n" +
 	"\x06street\x18\x01 \x01(\tR\x06street\x12\x12\n" +
-	"\x04city\x18\x02 \x01(\tR\x04city\"\x8c\x01\n" +
+	"\x04city\x18\x02 \x01(\tR\x04city\"\x85\x01\n" +
 	"\x04User\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x12\n" +
-	"\x04test\x18\x03 \x01(\tR\x04test\x12\"\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\"\n" +
 	"\aaddress\x18\x04 \x01(\v2\b.AddressR\aaddress\x12\x16\n" +
 	"\x06phones\x18\x05 \x03(\tR\x06phones\x12\x10\n" +
-	"\x03age\x18\x06 \x01(\x05R\x03age\" \n" +
+	"\x03age\x18\x06 \x01(\x05R\x03ageJ\x04\b\x03\x10\x04R\x05email\" \n" +
 	"\x0eGetUserRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id2\\\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\"?\n" +
+	"\rUploadSummary\x12\x14\n" +
+	"\x05count\x18\x01 \x01(\x05R\x05count\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"'\n" +
+	"\vServerReply\x12\x18\n" +
+	"\amessage\x18\x01 \x01(\tR\amessage2\xa5\x01\n" +
 	"\vUserService\x12!\n" +
 	"\aGetUser\x12\x0f.GetUserRequest\x1a\x05.User\x12*\n" +
-	"\x0eGetActivityLog\x12\x0f.GetUserRequest\x1a\x05.User0\x01B\rZ\v./generatedb\x06proto3"
+	"\x0eGetActivityLog\x12\x0f.GetUserRequest\x1a\x05.User0\x01\x12&\n" +
+	"\vUploadUsers\x12\x05.User\x1a\x0e.UploadSummary(\x01\x12\x1f\n" +
+	"\x04Chat\x12\x05.User\x1a\f.ServerReply(\x010\x01B\rZ\v./generatedb\x06proto3"
 
 var (
 	file_proto_user_proto_rawDescOnce sync.Once
@@ -234,20 +328,26 @@ func file_proto_user_proto_rawDescGZIP() []byte {
 	return file_proto_user_proto_rawDescData
 }
 
-var file_proto_user_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_proto_user_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_proto_user_proto_goTypes = []any{
 	(*Address)(nil),        // 0: Address
 	(*User)(nil),           // 1: User
 	(*GetUserRequest)(nil), // 2: GetUserRequest
+	(*UploadSummary)(nil),  // 3: UploadSummary
+	(*ServerReply)(nil),    // 4: ServerReply
 }
 var file_proto_user_proto_depIdxs = []int32{
 	0, // 0: User.address:type_name -> Address
 	2, // 1: UserService.GetUser:input_type -> GetUserRequest
 	2, // 2: UserService.GetActivityLog:input_type -> GetUserRequest
-	1, // 3: UserService.GetUser:output_type -> User
-	1, // 4: UserService.GetActivityLog:output_type -> User
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
+	1, // 3: UserService.UploadUsers:input_type -> User
+	1, // 4: UserService.Chat:input_type -> User
+	1, // 5: UserService.GetUser:output_type -> User
+	1, // 6: UserService.GetActivityLog:output_type -> User
+	3, // 7: UserService.UploadUsers:output_type -> UploadSummary
+	4, // 8: UserService.Chat:output_type -> ServerReply
+	5, // [5:9] is the sub-list for method output_type
+	1, // [1:5] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
 	1, // [1:1] is the sub-list for extension extendee
 	0, // [0:1] is the sub-list for field type_name
@@ -264,7 +364,7 @@ func file_proto_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_user_proto_rawDesc), len(file_proto_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -2,28 +2,38 @@ syntax = "proto3";
 
 option go_package = "./generated";
 
-// Nested message
-
 message Address {
-	string street = 1;
-	string city = 2;
+  string street = 1;
+  string city   = 2;
 }
 
 message User {
+  reserved 3;
+  reserved "email";
 
-  int32   id      = 1;
-  string  name    = 2;
-  string test = 3;
-  Address address = 4;
-  repeated string phones = 5;
-  int32   age     = 6;
+  int32           id      = 1;
+  string          name    = 2;
+  Address         address = 4;
+  repeated string phones  = 5;
+  int32           age     = 6;
 }
 
 message GetUserRequest {
-	int32 id = 1;
+  int32 id = 1;
+}
+
+message UploadSummary {
+  int32  count   = 1;
+  string message = 2;
+}
+
+message ServerReply {
+  string message = 1;
 }
 
 service UserService {
-  rpc GetUser (GetUserRequest) returns (User);
-  rpc GetActivityLog (GetUserRequest) returns (stream User);
+  rpc GetUser        (GetUserRequest)  returns (User);
+  rpc GetActivityLog (GetUserRequest)  returns (stream User);
+  rpc UploadUsers    (stream User)     returns (UploadSummary);
+  rpc Chat (stream User) returns (stream ServerReply);
 }
