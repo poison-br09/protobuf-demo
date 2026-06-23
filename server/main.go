@@ -20,14 +20,18 @@ func (s *userServiceServer) GetUser(ctx context.Context, req *generated.GetUserR
 	fmt.Println("Server received request for ID:", req.Id)
 
 	return &generated.User{
-		Id:   req.Id,
-		Name: "Abhay Kumar",
-		// Email: "abhay@zenwork.com",
+		Id:     req.Id,
+		Name:   "Abhay Kumar",
+		Age:    25,
+		Status: generated.UserStatus_USER_STATUS_ACTIVE,
 		Address: &generated.Address{
 			Street: "123 MG Road",
 			City:   "Hyderabad",
 		},
 		Phones: []string{"9999999999", "8888888888"},
+		Contact: &generated.User_EmailContact{
+			EmailContact: "abhay@zenwork.com",
+		},
 	}, nil
 }
 
@@ -99,7 +103,9 @@ func main() {
 		log.Fatal("Failed to listen:", err)
 	}
 
-	grpcServer := grpc.NewServer()
+	grpcServer := grpc.NewServer(
+		grpc.UnaryInterceptor(loggingInterceptor),
+	)
 	generated.RegisterUserServiceServer(grpcServer, &userServiceServer{})
 
 	fmt.Println("gRPC server running on port 50051")

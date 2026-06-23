@@ -21,6 +21,58 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type UserStatus int32
+
+const (
+	UserStatus_USER_STATUS_UNKNOWN  UserStatus = 0
+	UserStatus_USER_STATUS_ACTIVE   UserStatus = 1
+	UserStatus_USER_STATUS_INACTIVE UserStatus = 2
+	UserStatus_USER_STATUS_BANNED   UserStatus = 3
+)
+
+// Enum value maps for UserStatus.
+var (
+	UserStatus_name = map[int32]string{
+		0: "USER_STATUS_UNKNOWN",
+		1: "USER_STATUS_ACTIVE",
+		2: "USER_STATUS_INACTIVE",
+		3: "USER_STATUS_BANNED",
+	}
+	UserStatus_value = map[string]int32{
+		"USER_STATUS_UNKNOWN":  0,
+		"USER_STATUS_ACTIVE":   1,
+		"USER_STATUS_INACTIVE": 2,
+		"USER_STATUS_BANNED":   3,
+	}
+)
+
+func (x UserStatus) Enum() *UserStatus {
+	p := new(UserStatus)
+	*p = x
+	return p
+}
+
+func (x UserStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (UserStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_proto_user_proto_enumTypes[0].Descriptor()
+}
+
+func (UserStatus) Type() protoreflect.EnumType {
+	return &file_proto_user_proto_enumTypes[0]
+}
+
+func (x UserStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use UserStatus.Descriptor instead.
+func (UserStatus) EnumDescriptor() ([]byte, []int) {
+	return file_proto_user_proto_rawDescGZIP(), []int{0}
+}
+
 type Address struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Street        string                 `protobuf:"bytes,1,opt,name=street,proto3" json:"street,omitempty"`
@@ -74,12 +126,18 @@ func (x *Address) GetCity() string {
 }
 
 type User struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Address       *Address               `protobuf:"bytes,4,opt,name=address,proto3" json:"address,omitempty"`
-	Phones        []string               `protobuf:"bytes,5,rep,name=phones,proto3" json:"phones,omitempty"`
-	Age           int32                  `protobuf:"varint,6,opt,name=age,proto3" json:"age,omitempty"`
+	state   protoimpl.MessageState `protogen:"open.v1"`
+	Id      int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name    string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Address *Address               `protobuf:"bytes,4,opt,name=address,proto3" json:"address,omitempty"`
+	Phones  []string               `protobuf:"bytes,5,rep,name=phones,proto3" json:"phones,omitempty"`
+	Age     int32                  `protobuf:"varint,6,opt,name=age,proto3" json:"age,omitempty"`
+	Status  UserStatus             `protobuf:"varint,7,opt,name=status,proto3,enum=UserStatus" json:"status,omitempty"`
+	// Types that are valid to be assigned to Contact:
+	//
+	//	*User_EmailContact
+	//	*User_PhoneContact
+	Contact       isUser_Contact `protobuf_oneof:"contact"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -148,6 +206,54 @@ func (x *User) GetAge() int32 {
 	}
 	return 0
 }
+
+func (x *User) GetStatus() UserStatus {
+	if x != nil {
+		return x.Status
+	}
+	return UserStatus_USER_STATUS_UNKNOWN
+}
+
+func (x *User) GetContact() isUser_Contact {
+	if x != nil {
+		return x.Contact
+	}
+	return nil
+}
+
+func (x *User) GetEmailContact() string {
+	if x != nil {
+		if x, ok := x.Contact.(*User_EmailContact); ok {
+			return x.EmailContact
+		}
+	}
+	return ""
+}
+
+func (x *User) GetPhoneContact() string {
+	if x != nil {
+		if x, ok := x.Contact.(*User_PhoneContact); ok {
+			return x.PhoneContact
+		}
+	}
+	return ""
+}
+
+type isUser_Contact interface {
+	isUser_Contact()
+}
+
+type User_EmailContact struct {
+	EmailContact string `protobuf:"bytes,8,opt,name=email_contact,json=emailContact,proto3,oneof"`
+}
+
+type User_PhoneContact struct {
+	PhoneContact string `protobuf:"bytes,9,opt,name=phone_contact,json=phoneContact,proto3,oneof"`
+}
+
+func (*User_EmailContact) isUser_Contact() {}
+
+func (*User_PhoneContact) isUser_Contact() {}
 
 type GetUserRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -296,20 +402,30 @@ const file_proto_user_proto_rawDesc = "" +
 	"\x10proto/user.proto\"5\n" +
 	"\aAddress\x12\x16\n" +
 	"\x06street\x18\x01 \x01(\tR\x06street\x12\x12\n" +
-	"\x04city\x18\x02 \x01(\tR\x04city\"\x85\x01\n" +
+	"\x04city\x18\x02 \x01(\tR\x04city\"\x83\x02\n" +
 	"\x04User\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\"\n" +
 	"\aaddress\x18\x04 \x01(\v2\b.AddressR\aaddress\x12\x16\n" +
 	"\x06phones\x18\x05 \x03(\tR\x06phones\x12\x10\n" +
-	"\x03age\x18\x06 \x01(\x05R\x03ageJ\x04\b\x03\x10\x04R\x05email\" \n" +
+	"\x03age\x18\x06 \x01(\x05R\x03age\x12#\n" +
+	"\x06status\x18\a \x01(\x0e2\v.UserStatusR\x06status\x12%\n" +
+	"\remail_contact\x18\b \x01(\tH\x00R\femailContact\x12%\n" +
+	"\rphone_contact\x18\t \x01(\tH\x00R\fphoneContactB\t\n" +
+	"\acontactJ\x04\b\x03\x10\x04R\x05email\" \n" +
 	"\x0eGetUserRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\"?\n" +
 	"\rUploadSummary\x12\x14\n" +
 	"\x05count\x18\x01 \x01(\x05R\x05count\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\"'\n" +
 	"\vServerReply\x12\x18\n" +
-	"\amessage\x18\x01 \x01(\tR\amessage2\xa5\x01\n" +
+	"\amessage\x18\x01 \x01(\tR\amessage*o\n" +
+	"\n" +
+	"UserStatus\x12\x17\n" +
+	"\x13USER_STATUS_UNKNOWN\x10\x00\x12\x16\n" +
+	"\x12USER_STATUS_ACTIVE\x10\x01\x12\x18\n" +
+	"\x14USER_STATUS_INACTIVE\x10\x02\x12\x16\n" +
+	"\x12USER_STATUS_BANNED\x10\x032\xa5\x01\n" +
 	"\vUserService\x12!\n" +
 	"\aGetUser\x12\x0f.GetUserRequest\x1a\x05.User\x12*\n" +
 	"\x0eGetActivityLog\x12\x0f.GetUserRequest\x1a\x05.User0\x01\x12&\n" +
@@ -328,29 +444,32 @@ func file_proto_user_proto_rawDescGZIP() []byte {
 	return file_proto_user_proto_rawDescData
 }
 
+var file_proto_user_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_proto_user_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_proto_user_proto_goTypes = []any{
-	(*Address)(nil),        // 0: Address
-	(*User)(nil),           // 1: User
-	(*GetUserRequest)(nil), // 2: GetUserRequest
-	(*UploadSummary)(nil),  // 3: UploadSummary
-	(*ServerReply)(nil),    // 4: ServerReply
+	(UserStatus)(0),        // 0: UserStatus
+	(*Address)(nil),        // 1: Address
+	(*User)(nil),           // 2: User
+	(*GetUserRequest)(nil), // 3: GetUserRequest
+	(*UploadSummary)(nil),  // 4: UploadSummary
+	(*ServerReply)(nil),    // 5: ServerReply
 }
 var file_proto_user_proto_depIdxs = []int32{
-	0, // 0: User.address:type_name -> Address
-	2, // 1: UserService.GetUser:input_type -> GetUserRequest
-	2, // 2: UserService.GetActivityLog:input_type -> GetUserRequest
-	1, // 3: UserService.UploadUsers:input_type -> User
-	1, // 4: UserService.Chat:input_type -> User
-	1, // 5: UserService.GetUser:output_type -> User
-	1, // 6: UserService.GetActivityLog:output_type -> User
-	3, // 7: UserService.UploadUsers:output_type -> UploadSummary
-	4, // 8: UserService.Chat:output_type -> ServerReply
-	5, // [5:9] is the sub-list for method output_type
-	1, // [1:5] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	1, // 0: User.address:type_name -> Address
+	0, // 1: User.status:type_name -> UserStatus
+	3, // 2: UserService.GetUser:input_type -> GetUserRequest
+	3, // 3: UserService.GetActivityLog:input_type -> GetUserRequest
+	2, // 4: UserService.UploadUsers:input_type -> User
+	2, // 5: UserService.Chat:input_type -> User
+	2, // 6: UserService.GetUser:output_type -> User
+	2, // 7: UserService.GetActivityLog:output_type -> User
+	4, // 8: UserService.UploadUsers:output_type -> UploadSummary
+	5, // 9: UserService.Chat:output_type -> ServerReply
+	6, // [6:10] is the sub-list for method output_type
+	2, // [2:6] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_proto_user_proto_init() }
@@ -358,18 +477,23 @@ func file_proto_user_proto_init() {
 	if File_proto_user_proto != nil {
 		return
 	}
+	file_proto_user_proto_msgTypes[1].OneofWrappers = []any{
+		(*User_EmailContact)(nil),
+		(*User_PhoneContact)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_user_proto_rawDesc), len(file_proto_user_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_proto_user_proto_goTypes,
 		DependencyIndexes: file_proto_user_proto_depIdxs,
+		EnumInfos:         file_proto_user_proto_enumTypes,
 		MessageInfos:      file_proto_user_proto_msgTypes,
 	}.Build()
 	File_proto_user_proto = out.File

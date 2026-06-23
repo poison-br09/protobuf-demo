@@ -7,6 +7,13 @@ message Address {
   string city   = 2;
 }
 
+enum UserStatus {
+  USER_STATUS_UNKNOWN = 0;
+  USER_STATUS_ACTIVE = 1;
+  USER_STATUS_INACTIVE = 2;
+  USER_STATUS_BANNED = 3;
+}
+
 message User {
   reserved 3;
   reserved "email";
@@ -16,6 +23,12 @@ message User {
   Address         address = 4;
   repeated string phones  = 5;
   int32           age     = 6;
+  UserStatus      status  = 7;
+
+  oneof contact {
+    string email_contact = 8;
+    string phone_contact = 9;
+  }
 }
 
 message GetUserRequest {

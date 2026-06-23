@@ -93,4 +93,18 @@ func main() {
 	}
 
 	chatStream.CloseSend()
+
+	fmt.Printf("Name: %s, Status: %s\n",
+		response.Name,
+		response.Status,
+	)
+
+	switch c := response.Contact.(type) {
+	case *generated.User_EmailContact:
+		fmt.Println("Contact via Email:", c.EmailContact)
+	case *generated.User_PhoneContact:
+		fmt.Println("Contact via Phone:", c.PhoneContact)
+	default:
+		fmt.Println("No contact info")
+	}
 }
