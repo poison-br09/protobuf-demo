@@ -8,7 +8,9 @@ import (
 	"time"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/status"
 )
 
 func main() {
@@ -22,19 +24,33 @@ func main() {
 
 	client := generated.NewUserServiceClient(conn)
 
-	response, err := client.GetUser(context.Background(), &generated.GetUserRequest{})
-
+	response, err := client.GetUser(context.Background(), &generated.GetUserRequest{Id: 99})
 	if err != nil {
-		log.Fatal("Error calling GetUser:", err)
+		switch status.Code(err) {
+		case codes.NotFound:
+			fmt.Println("Error: User not found!")
+		case codes.InvalidArgument:
+			fmt.Println("Error: Invalid argument!")
+		default:
+			fmt.Println("Unexpected error:", err)
+		}
+	} else {
+		fmt.Printf("Name: %s, Status: %s\n", response.Name, response.Status)
+		fmt.Printf("Id: %d\nName: %s\nCity: %s\nPhones: %v\n",
+			response.Id,
+			response.Name,
+			response.Address.City,
+			response.Phones,
+		)
 	}
 
-	fmt.Printf("Id: %d\nName: %s\nEmail: %s\nCity: %s\nPhones: %v\n",
-		response.Id,
-		response.Name,
-		// response.Email,
-		response.Address.City,
-		response.Phones,
-	)
+	// fmt.Printf("Id: %d\nName: %s\nEmail: %s\nCity: %s\nPhones: %v\n",
+	// 	response.Id,
+	// 	response.Name,
+	// 	// response.Email,
+	// 	response.Address.City,
+	// 	response.Phones,
+	// )
 
 	fmt.Println("\n--- Activity Log Stream ---")
 	activityStream, err := client.GetActivityLog(context.Background(), &generated.GetUserRequest{Id: 1})
@@ -94,17 +110,17 @@ func main() {
 
 	chatStream.CloseSend()
 
-	fmt.Printf("Name: %s, Status: %s\n",
-		response.Name,
-		response.Status,
-	)
+	// fmt.Printf("Name: %s, Status: %s\n",
+	// 	response.Name,
+	// 	response.Status,
+	// )
 
-	switch c := response.Contact.(type) {
-	case *generated.User_EmailContact:
-		fmt.Println("Contact via Email:", c.EmailContact)
-	case *generated.User_PhoneContact:
-		fmt.Println("Contact via Phone:", c.PhoneContact)
-	default:
-		fmt.Println("No contact info")
-	}
+	// switch c := response.Contact.(type) {
+	// case *generated.User_EmailContact:
+	// 	fmt.Println("Contact via Email:", c.EmailContact)
+	// case *generated.User_PhoneContact:
+	// 	fmt.Println("Contact via Phone:", c.PhoneContact)
+	// default:
+	// 	fmt.Println("No contact info")
+	// }
 }

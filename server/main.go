@@ -10,6 +10,8 @@ import (
 	"protobuf-demo/generated"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type userServiceServer struct {
@@ -18,6 +20,16 @@ type userServiceServer struct {
 
 func (s *userServiceServer) GetUser(ctx context.Context, req *generated.GetUserRequest) (*generated.User, error) {
 	fmt.Println("Server received request for ID:", req.Id)
+
+	// Validate input
+	if req.Id <= 0 {
+		return nil, status.Error(codes.InvalidArgument, "id must be greater than 0")
+	}
+
+	// Simulate user not found
+	if req.Id == 99 {
+		return nil, status.Error(codes.NotFound, "user with given id not found")
+	}
 
 	return &generated.User{
 		Id:     req.Id,
