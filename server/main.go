@@ -31,6 +31,17 @@ func (s *userServiceServer) GetUser(ctx context.Context, req *generated.GetUserR
 		return nil, status.Error(codes.NotFound, "user with given id not found")
 	}
 
+	// Simulate slow processing
+	fmt.Println("Processing...")
+
+	select {
+	case <-time.After(5 * time.Second):
+		fmt.Println("Processing complete!")
+	case <-ctx.Done():
+		fmt.Println("Client cancelled! Stopping work.")
+		return nil, status.Error(codes.Canceled, "request cancelled by client")
+	}
+
 	return &generated.User{
 		Id:     req.Id,
 		Name:   "Abhay Kumar",
@@ -116,7 +127,10 @@ func main() {
 	}
 
 	grpcServer := grpc.NewServer(
-		grpc.UnaryInterceptor(loggingInterceptor),
+		grpc.ChainUnaryInterceptor(
+			loggingInterceptor,
+			authInterceptor,
+		),
 	)
 	generated.RegisterUserServiceServer(grpcServer, &userServiceServer{})
 
