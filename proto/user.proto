@@ -2,6 +2,8 @@ syntax = "proto3";
 
 option go_package = "./generated";
 
+import "google/api/annotations.proto";
+
 message Address {
   string street = 1;
   string city   = 2;
@@ -45,8 +47,29 @@ message ServerReply {
 }
 
 service UserService {
-  rpc GetUser        (GetUserRequest)  returns (User);
-  rpc GetActivityLog (GetUserRequest)  returns (stream User);
-  rpc UploadUsers    (stream User)     returns (UploadSummary);
-  rpc Chat (stream User) returns (stream ServerReply);
+  rpc GetUser (GetUserRequest) returns (User) {
+    option (google.api.http) = {
+      get: "/v1/users/{id}"
+    };
+  }
+
+  rpc GetActivityLog (GetUserRequest) returns (stream User) {
+    option (google.api.http) = {
+      get: "/v1/users/{id}/activity"
+    };
+  }
+
+  rpc UploadUsers (stream User) returns (UploadSummary) {
+    option (google.api.http) = {
+      post: "/v1/users/upload"
+      body: "*"
+    };
+  }
+
+  rpc Chat (stream User) returns (stream ServerReply) {
+    option (google.api.http) = {
+      post: "/v1/users/chat"
+      body: "*"
+    };
+  }
 }

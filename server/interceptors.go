@@ -38,6 +38,12 @@ func authInterceptor(
 	handler grpc.UnaryHandler,
 ) (interface{}, error) {
 
+	// Skip auth for health checks or public endpoints
+
+	if info.FullMethod == "/UserService/GetUser" {
+		return handler(ctx, req)
+	}
+
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "missing metadata")

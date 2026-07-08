@@ -2,11 +2,12 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        v5.28.3
-// source: proto/user.proto
+// source: user.proto
 
 package generated
 
 import (
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -57,11 +58,11 @@ func (x UserStatus) String() string {
 }
 
 func (UserStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_proto_user_proto_enumTypes[0].Descriptor()
+	return file_user_proto_enumTypes[0].Descriptor()
 }
 
 func (UserStatus) Type() protoreflect.EnumType {
-	return &file_proto_user_proto_enumTypes[0]
+	return &file_user_proto_enumTypes[0]
 }
 
 func (x UserStatus) Number() protoreflect.EnumNumber {
@@ -70,7 +71,7 @@ func (x UserStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use UserStatus.Descriptor instead.
 func (UserStatus) EnumDescriptor() ([]byte, []int) {
-	return file_proto_user_proto_rawDescGZIP(), []int{0}
+	return file_user_proto_rawDescGZIP(), []int{0}
 }
 
 type Address struct {
@@ -83,7 +84,7 @@ type Address struct {
 
 func (x *Address) Reset() {
 	*x = Address{}
-	mi := &file_proto_user_proto_msgTypes[0]
+	mi := &file_user_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -95,7 +96,7 @@ func (x *Address) String() string {
 func (*Address) ProtoMessage() {}
 
 func (x *Address) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_user_proto_msgTypes[0]
+	mi := &file_user_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -108,7 +109,7 @@ func (x *Address) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Address.ProtoReflect.Descriptor instead.
 func (*Address) Descriptor() ([]byte, []int) {
-	return file_proto_user_proto_rawDescGZIP(), []int{0}
+	return file_user_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Address) GetStreet() string {
@@ -144,7 +145,7 @@ type User struct {
 
 func (x *User) Reset() {
 	*x = User{}
-	mi := &file_proto_user_proto_msgTypes[1]
+	mi := &file_user_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -156,7 +157,7 @@ func (x *User) String() string {
 func (*User) ProtoMessage() {}
 
 func (x *User) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_user_proto_msgTypes[1]
+	mi := &file_user_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -169,7 +170,7 @@ func (x *User) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use User.ProtoReflect.Descriptor instead.
 func (*User) Descriptor() ([]byte, []int) {
-	return file_proto_user_proto_rawDescGZIP(), []int{1}
+	return file_user_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *User) GetId() int32 {
@@ -264,7 +265,7 @@ type GetUserRequest struct {
 
 func (x *GetUserRequest) Reset() {
 	*x = GetUserRequest{}
-	mi := &file_proto_user_proto_msgTypes[2]
+	mi := &file_user_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -276,7 +277,7 @@ func (x *GetUserRequest) String() string {
 func (*GetUserRequest) ProtoMessage() {}
 
 func (x *GetUserRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_user_proto_msgTypes[2]
+	mi := &file_user_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -289,7 +290,7 @@ func (x *GetUserRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetUserRequest.ProtoReflect.Descriptor instead.
 func (*GetUserRequest) Descriptor() ([]byte, []int) {
-	return file_proto_user_proto_rawDescGZIP(), []int{2}
+	return file_user_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *GetUserRequest) GetId() int32 {
@@ -309,7 +310,7 @@ type UploadSummary struct {
 
 func (x *UploadSummary) Reset() {
 	*x = UploadSummary{}
-	mi := &file_proto_user_proto_msgTypes[3]
+	mi := &file_user_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -321,7 +322,7 @@ func (x *UploadSummary) String() string {
 func (*UploadSummary) ProtoMessage() {}
 
 func (x *UploadSummary) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_user_proto_msgTypes[3]
+	mi := &file_user_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -334,7 +335,7 @@ func (x *UploadSummary) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UploadSummary.ProtoReflect.Descriptor instead.
 func (*UploadSummary) Descriptor() ([]byte, []int) {
-	return file_proto_user_proto_rawDescGZIP(), []int{3}
+	return file_user_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *UploadSummary) GetCount() int32 {
@@ -360,7 +361,7 @@ type ServerReply struct {
 
 func (x *ServerReply) Reset() {
 	*x = ServerReply{}
-	mi := &file_proto_user_proto_msgTypes[4]
+	mi := &file_user_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -372,7 +373,7 @@ func (x *ServerReply) String() string {
 func (*ServerReply) ProtoMessage() {}
 
 func (x *ServerReply) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_user_proto_msgTypes[4]
+	mi := &file_user_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -385,7 +386,7 @@ func (x *ServerReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ServerReply.ProtoReflect.Descriptor instead.
 func (*ServerReply) Descriptor() ([]byte, []int) {
-	return file_proto_user_proto_rawDescGZIP(), []int{4}
+	return file_user_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ServerReply) GetMessage() string {
@@ -395,11 +396,12 @@ func (x *ServerReply) GetMessage() string {
 	return ""
 }
 
-var File_proto_user_proto protoreflect.FileDescriptor
+var File_user_proto protoreflect.FileDescriptor
 
-const file_proto_user_proto_rawDesc = "" +
+const file_user_proto_rawDesc = "" +
 	"\n" +
-	"\x10proto/user.proto\"5\n" +
+	"\n" +
+	"user.proto\x1a\x1cgoogle/api/annotations.proto\"5\n" +
 	"\aAddress\x12\x16\n" +
 	"\x06street\x18\x01 \x01(\tR\x06street\x12\x12\n" +
 	"\x04city\x18\x02 \x01(\tR\x04city\"\x83\x02\n" +
@@ -425,28 +427,28 @@ const file_proto_user_proto_rawDesc = "" +
 	"\x13USER_STATUS_UNKNOWN\x10\x00\x12\x16\n" +
 	"\x12USER_STATUS_ACTIVE\x10\x01\x12\x18\n" +
 	"\x14USER_STATUS_INACTIVE\x10\x02\x12\x16\n" +
-	"\x12USER_STATUS_BANNED\x10\x032\xa5\x01\n" +
-	"\vUserService\x12!\n" +
-	"\aGetUser\x12\x0f.GetUserRequest\x1a\x05.User\x12*\n" +
-	"\x0eGetActivityLog\x12\x0f.GetUserRequest\x1a\x05.User0\x01\x12&\n" +
-	"\vUploadUsers\x12\x05.User\x1a\x0e.UploadSummary(\x01\x12\x1f\n" +
-	"\x04Chat\x12\x05.User\x1a\f.ServerReply(\x010\x01B\rZ\v./generatedb\x06proto3"
+	"\x12USER_STATUS_BANNED\x10\x032\x96\x02\n" +
+	"\vUserService\x129\n" +
+	"\aGetUser\x12\x0f.GetUserRequest\x1a\x05.User\"\x16\x82\xd3\xe4\x93\x02\x10\x12\x0e/v1/users/{id}\x12K\n" +
+	"\x0eGetActivityLog\x12\x0f.GetUserRequest\x1a\x05.User\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/users/{id}/activity0\x01\x12C\n" +
+	"\vUploadUsers\x12\x05.User\x1a\x0e.UploadSummary\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/v1/users/upload(\x01\x12:\n" +
+	"\x04Chat\x12\x05.User\x1a\f.ServerReply\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/v1/users/chat(\x010\x01B\rZ\v./generatedb\x06proto3"
 
 var (
-	file_proto_user_proto_rawDescOnce sync.Once
-	file_proto_user_proto_rawDescData []byte
+	file_user_proto_rawDescOnce sync.Once
+	file_user_proto_rawDescData []byte
 )
 
-func file_proto_user_proto_rawDescGZIP() []byte {
-	file_proto_user_proto_rawDescOnce.Do(func() {
-		file_proto_user_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_proto_user_proto_rawDesc), len(file_proto_user_proto_rawDesc)))
+func file_user_proto_rawDescGZIP() []byte {
+	file_user_proto_rawDescOnce.Do(func() {
+		file_user_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_user_proto_rawDesc), len(file_user_proto_rawDesc)))
 	})
-	return file_proto_user_proto_rawDescData
+	return file_user_proto_rawDescData
 }
 
-var file_proto_user_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_proto_user_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
-var file_proto_user_proto_goTypes = []any{
+var file_user_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_user_proto_goTypes = []any{
 	(UserStatus)(0),        // 0: UserStatus
 	(*Address)(nil),        // 1: Address
 	(*User)(nil),           // 2: User
@@ -454,7 +456,7 @@ var file_proto_user_proto_goTypes = []any{
 	(*UploadSummary)(nil),  // 4: UploadSummary
 	(*ServerReply)(nil),    // 5: ServerReply
 }
-var file_proto_user_proto_depIdxs = []int32{
+var file_user_proto_depIdxs = []int32{
 	1, // 0: User.address:type_name -> Address
 	0, // 1: User.status:type_name -> UserStatus
 	3, // 2: UserService.GetUser:input_type -> GetUserRequest
@@ -472,12 +474,12 @@ var file_proto_user_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_proto_user_proto_init() }
-func file_proto_user_proto_init() {
-	if File_proto_user_proto != nil {
+func init() { file_user_proto_init() }
+func file_user_proto_init() {
+	if File_user_proto != nil {
 		return
 	}
-	file_proto_user_proto_msgTypes[1].OneofWrappers = []any{
+	file_user_proto_msgTypes[1].OneofWrappers = []any{
 		(*User_EmailContact)(nil),
 		(*User_PhoneContact)(nil),
 	}
@@ -485,18 +487,18 @@ func file_proto_user_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_user_proto_rawDesc), len(file_proto_user_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_user_proto_rawDesc), len(file_user_proto_rawDesc)),
 			NumEnums:      1,
 			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_proto_user_proto_goTypes,
-		DependencyIndexes: file_proto_user_proto_depIdxs,
-		EnumInfos:         file_proto_user_proto_enumTypes,
-		MessageInfos:      file_proto_user_proto_msgTypes,
+		GoTypes:           file_user_proto_goTypes,
+		DependencyIndexes: file_user_proto_depIdxs,
+		EnumInfos:         file_user_proto_enumTypes,
+		MessageInfos:      file_user_proto_msgTypes,
 	}.Build()
-	File_proto_user_proto = out.File
-	file_proto_user_proto_goTypes = nil
-	file_proto_user_proto_depIdxs = nil
+	File_user_proto = out.File
+	file_user_proto_goTypes = nil
+	file_user_proto_depIdxs = nil
 }
