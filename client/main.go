@@ -39,7 +39,8 @@ func main() {
 	)
 	defer cancel()
 
-	response, err := client.GetUser(ctx, &generated.GetUserRequest{Id: 1})
+	// response, err := client.GetUser(ctx, &generated.GetUserRequest{Id: 1})
+	response, err := getUserWithRetry(client, 1)
 	if err != nil {
 		switch status.Code(err) {
 		case codes.NotFound:
@@ -63,7 +64,7 @@ func main() {
 	}
 
 	fmt.Println("\n--- Activity Log Stream ---")
-	activityStream, err := client.GetActivityLog(context.Background(), &generated.GetUserRequest{Id: 1})
+	activityStream, err := client.GetActivityLog(ctx, &generated.GetUserRequest{Id: 1})
 	if err != nil {
 		log.Fatal("Error calling GetActivityLog:", err)
 	}
@@ -76,7 +77,7 @@ func main() {
 	}
 
 	fmt.Println("\n--- Uploading Users ---")
-	uploadStream, err := client.UploadUsers(context.Background())
+	uploadStream, err := client.UploadUsers(ctx)
 	if err != nil {
 		log.Fatal("Error starting upload:", err)
 	}
@@ -92,7 +93,7 @@ func main() {
 	fmt.Printf("Upload complete: %s (count: %d)\n", summary.Message, summary.Count)
 
 	fmt.Println("\n--- Bidirectional Chat ---")
-	chatStream, err := client.Chat(context.Background())
+	chatStream, err := client.Chat(ctx)
 	if err != nil {
 		log.Fatal("Error starting chat:", err)
 	}

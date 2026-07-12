@@ -3,8 +3,10 @@ module protobuf-demo
 go 1.25.0
 
 require (
+	github.com/avast/retry-go/v4 v4.7.0 // indirect
 	github.com/golang-jwt/jwt/v5 v5.3.1 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.29.0 // indirect
+	github.com/sony/gobreaker v1.0.0 // indirect
 	golang.org/x/net v0.51.0 // indirect
 	golang.org/x/sys v0.42.0 // indirect
 	golang.org/x/text v0.36.0 // indirect

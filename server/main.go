@@ -9,6 +9,8 @@ import (
 
 	"protobuf-demo/generated"
 
+	"math/rand"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -19,6 +21,10 @@ type userServiceServer struct {
 }
 
 func (s *userServiceServer) GetUser(ctx context.Context, req *generated.GetUserRequest) (*generated.User, error) {
+	if rand.Intn(3) == 0 { // fail 33% of the time
+		return nil, status.Error(codes.Unavailable, "server temporarily unavailable")
+	}
+
 	fmt.Println("Server received request for ID:", req.Id)
 
 	// Validate input
@@ -31,6 +37,8 @@ func (s *userServiceServer) GetUser(ctx context.Context, req *generated.GetUserR
 		return nil, status.Error(codes.NotFound, "user with given id not found")
 	}
 
+	// Make it always fail temporarily
+	return nil, status.Error(codes.Unavailable, "server temporarily unavailable")
 	// Simulate slow processing
 	fmt.Println("Processing...")
 
@@ -94,7 +102,7 @@ func (s *userServiceServer) UploadUsers(stream grpc.ClientStreamingServer[genera
 			break
 		}
 
-		fmt.Println("Server recieved user: %s\n", user.Name)
+		fmt.Printf("Server received user: %s\n", user.Name)
 		count++
 	}
 
